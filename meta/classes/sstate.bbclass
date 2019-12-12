@@ -803,7 +803,9 @@ sstate_create_package () {
 	chmod 0664 $TFILE
 	# Skip if it was already created by some other process
 	if [ ! -e ${SSTATE_PKG} ]; then
-		mv -f $TFILE ${SSTATE_PKG}
+                # Move into place using ln to attempt an atomic op.
+		# Abort if it already exists
+		ln $TFILE ${SSTATE_PKG} && rm $TFILE
 	else
 		rm $TFILE
 	fi
