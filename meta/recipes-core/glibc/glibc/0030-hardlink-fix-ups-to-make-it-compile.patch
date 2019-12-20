@@ -1,4 +1,4 @@
-From d08f436635cb9d627ebae4512105708d28fc36fe Mon Sep 17 00:00:00 2001
+From 3885be5fcc3a105421dd9736d415ce5d46f6720b Mon Sep 17 00:00:00 2001
 From: Jason Wessel <jason.wessel@windriver.com>
 Date: Sat, 7 Dec 2019 10:01:37 -0800
 Subject: [PATCH] hardlink: fix-ups to make it compile

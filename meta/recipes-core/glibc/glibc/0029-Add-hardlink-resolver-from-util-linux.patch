@@ -1,4 +1,4 @@
-From 9e5e5297d9a5ef66b3920313356bf7f25955dff3 Mon Sep 17 00:00:00 2001
+From b4342649b0784f80d9ee5032360ab34c0fadcdb8 Mon Sep 17 00:00:00 2001
 From: Jason Wessel <jason.wessel@windriver.com>
 Date: Sat, 7 Dec 2019 09:59:22 -0800
 Subject: [PATCH] Add hardlink resolver from util-linux

@@ -1,8 +1,7 @@
-From dc715f6c70d01e9c3b31c1825fa5bc447967c847 Mon Sep 17 00:00:00 2001
+From 8ec172f84bfd13a9c2af6f14c221eb9d034b2ee1 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 18 Mar 2015 00:11:22 +0000
-Subject: [PATCH 07/28] readlib: Add OECORE_KNOWN_INTERPRETER_NAMES to known
- names
+Subject: [PATCH] readlib: Add OECORE_KNOWN_INTERPRETER_NAMES to known names
 
 This bolts in a hook for OE to pass its own version of interpreter
 names into glibc especially for multilib case, where it differs from any
@@ -17,7 +16,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/elf/readlib.c b/elf/readlib.c
-index c9743e6692..6307f918fc 100644
+index 0f3fd38346..3774537241 100644
 --- a/elf/readlib.c
 +++ b/elf/readlib.c
 @@ -51,6 +51,7 @@ static struct known_names interpreters[] =
@@ -28,6 +27,3 @@ index c9743e6692..6307f918fc 100644
  };
  
  static struct known_names known_libs[] =
--- 
-2.22.0
-

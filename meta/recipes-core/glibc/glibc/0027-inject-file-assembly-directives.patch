@@ -1,7 +1,7 @@
-From fecd98040a2ae1bc5943a40a1623d76a696e0785 Mon Sep 17 00:00:00 2001
+From e759fa6bde648686a44673dee095b3b5e5794db5 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Thu, 29 Nov 2018 17:29:35 -0800
-Subject: [PATCH 27/28] inject file assembly directives
+Subject: [PATCH] inject file assembly directives
 
 Currently, non-IA builds are not reproducibile since build paths are
 being injected into the debug symbols. These are coming from the use of
@@ -48,7 +48,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  20 files changed, 40 insertions(+)
 
 diff --git a/csu/abi-note.S b/csu/abi-note.S
-index fa1f014a88..098731362a 100644
+index c9613eda6e..0e2abb2ac4 100644
 --- a/csu/abi-note.S
 +++ b/csu/abi-note.S
 @@ -56,6 +56,8 @@ offset	length	contents
@@ -61,7 +61,7 @@ index fa1f014a88..098731362a 100644
     name begins with `.note' and creates a PT_NOTE program header entry
     pointing at it. */
 diff --git a/sysdeps/aarch64/crti.S b/sysdeps/aarch64/crti.S
-index d4e7dfcf5c..e0218df30c 100644
+index 91164db52e..bf4f91ab13 100644
 --- a/sysdeps/aarch64/crti.S
 +++ b/sysdeps/aarch64/crti.S
 @@ -50,6 +50,8 @@
@@ -74,7 +74,7 @@ index d4e7dfcf5c..e0218df30c 100644
  	weak_extern (PREINIT_FUNCTION)
  #else
 diff --git a/sysdeps/aarch64/crtn.S b/sysdeps/aarch64/crtn.S
-index 363f752460..2fb06fba62 100644
+index 2a0debb8d6..6b40d3c0e8 100644
 --- a/sysdeps/aarch64/crtn.S
 +++ b/sysdeps/aarch64/crtn.S
 @@ -37,6 +37,8 @@
@@ -87,7 +87,7 @@ index 363f752460..2fb06fba62 100644
  	ldp	x29, x30, [sp], 16
  	RET
 diff --git a/sysdeps/aarch64/dl-tlsdesc.S b/sysdeps/aarch64/dl-tlsdesc.S
-index 4abe6b82a3..8c44b2ff8a 100644
+index 2fdaa8ee77..2406485048 100644
 --- a/sysdeps/aarch64/dl-tlsdesc.S
 +++ b/sysdeps/aarch64/dl-tlsdesc.S
 @@ -22,6 +22,8 @@
@@ -100,7 +100,7 @@ index 4abe6b82a3..8c44b2ff8a 100644
  #define SAVE_Q_REGISTERS				\
  	stp	q0, q1,	[sp, #-32*NSAVEDQREGPAIRS]!;	\
 diff --git a/sysdeps/aarch64/dl-trampoline.S b/sysdeps/aarch64/dl-trampoline.S
-index 19b117e8f9..38c78b5409 100644
+index 721735388a..a8db35bbeb 100644
 --- a/sysdeps/aarch64/dl-trampoline.S
 +++ b/sysdeps/aarch64/dl-trampoline.S
 @@ -21,6 +21,8 @@
@@ -113,7 +113,7 @@ index 19b117e8f9..38c78b5409 100644
  #define ip0l PTR_REG (16)
  #define ip1 x17
 diff --git a/sysdeps/aarch64/start.S b/sysdeps/aarch64/start.S
-index f5e9b9c223..ae3e22a6a5 100644
+index c43e4364c1..5816f50ca9 100644
 --- a/sysdeps/aarch64/start.S
 +++ b/sysdeps/aarch64/start.S
 @@ -18,6 +18,8 @@
@@ -136,7 +136,7 @@ index 07bd4c4619..7213b16f27 100644
     alignment in any callee.  */
  	.eabi_attribute 25, 1
 diff --git a/sysdeps/arm/crti.S b/sysdeps/arm/crti.S
-index 26dbba66a3..dd84ecd566 100644
+index 70b3237b1c..918da4302f 100644
 --- a/sysdeps/arm/crti.S
 +++ b/sysdeps/arm/crti.S
 @@ -57,6 +57,8 @@
@@ -149,7 +149,7 @@ index 26dbba66a3..dd84ecd566 100644
  	.p2align 2
  	.type call_weak_fn, %function
 diff --git a/sysdeps/arm/crtn.S b/sysdeps/arm/crtn.S
-index 8f91c8d88b..a87fe49e07 100644
+index 1432dbad68..38cff82597 100644
 --- a/sysdeps/arm/crtn.S
 +++ b/sysdeps/arm/crtn.S
 @@ -37,6 +37,8 @@
@@ -162,7 +162,7 @@ index 8f91c8d88b..a87fe49e07 100644
     corresponding to the prologues in crti.S. */
  
 diff --git a/sysdeps/arm/dl-tlsdesc.S b/sysdeps/arm/dl-tlsdesc.S
-index a929340b42..b724c9776d 100644
+index 80ea316983..57e8a940b5 100644
 --- a/sysdeps/arm/dl-tlsdesc.S
 +++ b/sysdeps/arm/dl-tlsdesc.S
 @@ -21,6 +21,8 @@
@@ -175,7 +175,7 @@ index a929340b42..b724c9776d 100644
  	@ emit debug information with cfi
  	@ use arm-specific pseudos for unwinding itself
 diff --git a/sysdeps/arm/dl-trampoline.S b/sysdeps/arm/dl-trampoline.S
-index 325cfcd2ce..4bfdcbce51 100644
+index 07e05cc323..79c1430160 100644
 --- a/sysdeps/arm/dl-trampoline.S
 +++ b/sysdeps/arm/dl-trampoline.S
 @@ -21,6 +21,8 @@
@@ -188,7 +188,7 @@ index 325cfcd2ce..4bfdcbce51 100644
  	.globl _dl_runtime_resolve
  	.type _dl_runtime_resolve, #function
 diff --git a/sysdeps/arm/start.S b/sysdeps/arm/start.S
-index a05f8a4651..2f4374fcaa 100644
+index 08311c2bac..6818e054c6 100644
 --- a/sysdeps/arm/start.S
 +++ b/sysdeps/arm/start.S
 @@ -57,6 +57,8 @@
@@ -201,7 +201,7 @@ index a05f8a4651..2f4374fcaa 100644
     alignment in any callee.  */
  	.eabi_attribute 25, 1
 diff --git a/sysdeps/mips/start.S b/sysdeps/mips/start.S
-index 8638e5b545..93f6564aec 100644
+index a63e491aee..c3fa553980 100644
 --- a/sysdeps/mips/start.S
 +++ b/sysdeps/mips/start.S
 @@ -38,6 +38,8 @@
@@ -214,7 +214,7 @@ index 8638e5b545..93f6564aec 100644
  #error ENTRY_POINT needs to be defined for start.S on MIPS/ELF.
  #endif
 diff --git a/sysdeps/powerpc/powerpc32/dl-start.S b/sysdeps/powerpc/powerpc32/dl-start.S
-index 99a10d643a..e47fc0d245 100644
+index 41c970b170..d20992842b 100644
 --- a/sysdeps/powerpc/powerpc32/dl-start.S
 +++ b/sysdeps/powerpc/powerpc32/dl-start.S
 @@ -18,6 +18,8 @@
@@ -227,7 +227,7 @@ index 99a10d643a..e47fc0d245 100644
     The C function `_dl_start' is the real entry point;
     its return value is the user program's entry point.	*/
 diff --git a/sysdeps/powerpc/powerpc32/start.S b/sysdeps/powerpc/powerpc32/start.S
-index 172fb5a56b..ef1471b861 100644
+index 143467be88..167ee3c1ff 100644
 --- a/sysdeps/powerpc/powerpc32/start.S
 +++ b/sysdeps/powerpc/powerpc32/start.S
 @@ -35,6 +35,8 @@
@@ -240,7 +240,7 @@ index 172fb5a56b..ef1471b861 100644
     before crtbegin.o, the file defining __EH_FRAME_BEGIN__.  */
  #undef cfi_startproc
 diff --git a/sysdeps/powerpc/powerpc64/start.S b/sysdeps/powerpc/powerpc64/start.S
-index 55fae68ad6..0cb608fe0f 100644
+index ae9c645302..cbda4d39f2 100644
 --- a/sysdeps/powerpc/powerpc64/start.S
 +++ b/sysdeps/powerpc/powerpc64/start.S
 @@ -35,6 +35,8 @@
@@ -253,7 +253,7 @@ index 55fae68ad6..0cb608fe0f 100644
     before crtbegin.o, the file defining __EH_FRAME_BEGIN__.  */
  #undef cfi_startproc
 diff --git a/sysdeps/unix/sysv/linux/aarch64/__read_tp.S b/sysdeps/unix/sysv/linux/aarch64/__read_tp.S
-index 30a29b9fb0..07892b383f 100644
+index c05ccc507f..c2cd9b1db6 100644
 --- a/sysdeps/unix/sysv/linux/aarch64/__read_tp.S
 +++ b/sysdeps/unix/sysv/linux/aarch64/__read_tp.S
 @@ -18,6 +18,8 @@
@@ -266,7 +266,7 @@ index 30a29b9fb0..07892b383f 100644
  ENTRY (__read_tp)
  	mrs	x0, tpidr_el0
 diff --git a/sysdeps/unix/sysv/linux/arm/aeabi_read_tp.S b/sysdeps/unix/sysv/linux/arm/aeabi_read_tp.S
-index f64c4ffe8a..2da315ab08 100644
+index 8b0f6b24a4..72b8c28cb6 100644
 --- a/sysdeps/unix/sysv/linux/arm/aeabi_read_tp.S
 +++ b/sysdeps/unix/sysv/linux/arm/aeabi_read_tp.S
 @@ -39,6 +39,8 @@
@@ -279,7 +279,7 @@ index f64c4ffe8a..2da315ab08 100644
  ENTRY (__aeabi_read_tp)
  #ifdef ARCH_HAS_HARD_TP
 diff --git a/sysdeps/unix/sysv/linux/arm/libc-do-syscall.S b/sysdeps/unix/sysv/linux/arm/libc-do-syscall.S
-index 0b6237ac55..8cda491c28 100644
+index 8e097aa507..282ae6a161 100644
 --- a/sysdeps/unix/sysv/linux/arm/libc-do-syscall.S
 +++ b/sysdeps/unix/sysv/linux/arm/libc-do-syscall.S
 @@ -27,6 +27,8 @@
@@ -299,6 +299,3 @@ index eeb96544e3..da182b28f8 100644
 +	.file "dl-brk.S"
 +
  #include <brk.S>
--- 
-2.22.0
-

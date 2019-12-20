@@ -1,8 +1,7 @@
-From 3aceb84e2bc0f796204fe059beede91179b1bc6e Mon Sep 17 00:00:00 2001
+From 85fea5196fea2bd66266391d2b86b33b0adc747c Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Wed, 18 Mar 2015 01:51:38 +0000
-Subject: [PATCH 03/28] nativesdk-glibc: Raise the size of arrays containing dl
- paths
+Subject: [PATCH] nativesdk-glibc: Raise the size of arrays containing dl paths
 
 This patch puts the dynamic loader path in the binaries, SYSTEM_DIRS strings
 and lengths as well as ld.so.cache path in the dynamic loader to specific
@@ -26,7 +25,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  7 files changed, 14 insertions(+), 10 deletions(-)
 
 diff --git a/elf/dl-cache.c b/elf/dl-cache.c
-index d8d1e2344e..d2247bfc4f 100644
+index b0685ac6a4..fd01a1fefd 100644
 --- a/elf/dl-cache.c
 +++ b/elf/dl-cache.c
 @@ -133,6 +133,10 @@ do									      \
@@ -41,7 +40,7 @@ index d8d1e2344e..d2247bfc4f 100644
  _dl_cache_libcmp (const char *p1, const char *p2)
  {
 diff --git a/elf/dl-load.c b/elf/dl-load.c
-index c7a0fa58cb..4b87505d45 100644
+index 6e9629256f..a9d05818ac 100644
 --- a/elf/dl-load.c
 +++ b/elf/dl-load.c
 @@ -110,8 +110,8 @@ static size_t max_capstrlen attribute_relro;
@@ -56,7 +55,7 @@ index c7a0fa58cb..4b87505d45 100644
    SYSTEM_DIRS_LEN
  };
 diff --git a/elf/interp.c b/elf/interp.c
-index 243829f5f7..0e74241703 100644
+index dd704f2244..ec1a1fabd2 100644
 --- a/elf/interp.c
 +++ b/elf/interp.c
 @@ -18,5 +18,5 @@
@@ -67,7 +66,7 @@ index 243829f5f7..0e74241703 100644
 +const char __invoke_dynamic_linker__[4096] __attribute__ ((section (".interp")))
    = RUNTIME_LINKER;
 diff --git a/elf/ldconfig.c b/elf/ldconfig.c
-index 3bc9e61891..6a23096435 100644
+index 62bbe77a88..4741b69c8b 100644
 --- a/elf/ldconfig.c
 +++ b/elf/ldconfig.c
 @@ -168,6 +168,9 @@ static struct argp argp =
@@ -81,7 +80,7 @@ index 3bc9e61891..6a23096435 100644
     a platform.  */
  static int
 diff --git a/elf/rtld.c b/elf/rtld.c
-index c9490ff694..3962373ebb 100644
+index dd8fc5e6c6..533595a9dd 100644
 --- a/elf/rtld.c
 +++ b/elf/rtld.c
 @@ -173,6 +173,7 @@ dso_name_valid_for_suid (const char *p)
@@ -109,7 +108,7 @@ index c9490ff694..3962373ebb 100644
        ++_dl_skip_args;
        --_dl_argc;
 diff --git a/iconv/gconv_conf.c b/iconv/gconv_conf.c
-index ae8937cba0..f321ee419e 100644
+index 23658dd633..a12da49d2f 100644
 --- a/iconv/gconv_conf.c
 +++ b/iconv/gconv_conf.c
 @@ -36,7 +36,7 @@
@@ -122,7 +121,7 @@ index ae8937cba0..f321ee419e 100644
  /* Type to represent search path.  */
  struct path_elem
 diff --git a/sysdeps/generic/dl-cache.h b/sysdeps/generic/dl-cache.h
-index bc8b40331d..b0fdd2144b 100644
+index 9301a624a1..aba658fcc0 100644
 --- a/sysdeps/generic/dl-cache.h
 +++ b/sysdeps/generic/dl-cache.h
 @@ -27,10 +27,6 @@
@@ -136,6 +135,3 @@ index bc8b40331d..b0fdd2144b 100644
  #ifndef add_system_dir
  # define add_system_dir(dir) add_dir (dir)
  #endif
--- 
-2.22.0
-

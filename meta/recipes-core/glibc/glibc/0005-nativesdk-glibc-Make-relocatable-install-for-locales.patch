@@ -1,7 +1,7 @@
-From 50ab0b0c116f4ae3d975ec1b15ed4595fd9147f6 Mon Sep 17 00:00:00 2001
+From 53f2fda5c45e675c7d6ffbf936f42304e3de2692 Mon Sep 17 00:00:00 2001
 From: Khem Raj <raj.khem@gmail.com>
 Date: Fri, 3 Aug 2018 09:55:12 -0700
-Subject: [PATCH 05/28] nativesdk-glibc: Make relocatable install for locales
+Subject: [PATCH] nativesdk-glibc: Make relocatable install for locales
 
 The glibc locale path is hard-coded to the install prefix, but in SDKs we need
 to be able to relocate the binaries.  Expand the strings to 4K and put them in a
@@ -18,7 +18,7 @@ Signed-off-by: Khem Raj <raj.khem@gmail.com>
  3 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/locale/findlocale.c b/locale/findlocale.c
-index 9af605bd64..b2b0a3f93b 100644
+index 972a4a205c..cc88ba8e03 100644
 --- a/locale/findlocale.c
 +++ b/locale/findlocale.c
 @@ -56,7 +56,7 @@ struct __locale_data *const _nl_C[] attribute_hidden =
@@ -30,7 +30,7 @@ index 9af605bd64..b2b0a3f93b 100644
  
  /* Checks if the name is actually present, that is, not NULL and not
     empty.  */
-@@ -167,7 +167,7 @@ _nl_find_locale (const char *locale_path, size_t locale_path_len,
+@@ -166,7 +166,7 @@ _nl_find_locale (const char *locale_path, size_t locale_path_len,
  
        /* Nothing in the archive.  Set the default path to search below.  */
        locale_path = _nl_default_locale_path;
@@ -40,7 +40,7 @@ index 9af605bd64..b2b0a3f93b 100644
    else
      /* We really have to load some data.  First see whether the name is
 diff --git a/locale/loadarchive.c b/locale/loadarchive.c
-index 803c1cf2a4..9023f475b8 100644
+index b4a73d5c94..0941056635 100644
 --- a/locale/loadarchive.c
 +++ b/locale/loadarchive.c
 @@ -42,7 +42,7 @@
@@ -53,10 +53,10 @@ index 803c1cf2a4..9023f475b8 100644
  /* Size of initial mapping window, optimal if large enough to
     cover the header plus the initial locale.  */
 diff --git a/locale/localeinfo.h b/locale/localeinfo.h
-index 7c1cc3eecb..53cb8bfc59 100644
+index 40db571f07..711622fd65 100644
 --- a/locale/localeinfo.h
 +++ b/locale/localeinfo.h
-@@ -325,7 +325,7 @@ _nl_lookup_word (locale_t l, int category, int item)
+@@ -331,7 +331,7 @@ _nl_lookup_word (locale_t l, int category, int item)
  }
  
  /* Default search path if no LOCPATH environment variable.  */
@@ -65,6 +65,3 @@ index 7c1cc3eecb..53cb8bfc59 100644
  
  /* Load the locale data for CATEGORY from the file specified by *NAME.
     If *NAME is "", use environment variables as specified by POSIX, and
--- 
-2.22.0
-
