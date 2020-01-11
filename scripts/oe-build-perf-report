@@ -528,10 +528,12 @@ def main(argv=None):
     else:
         index1 = len(revs) - 1
 
+    notesbranch = args.branch
     if args.branch2:
         revs2.append(revs[index1])
         index1 = len(revs2) - 1
         revs = revs2
+        notesbranch = args.branch2
 
     if args.commit2:
         if args.commit_number2:
@@ -589,7 +591,7 @@ def main(argv=None):
     buildstats = None
     if args.dump_buildstats or args.html:
         outdir = 'oe-build-perf-buildstats' if args.dump_buildstats else None
-        notes_ref = 'buildstats/{}/{}/{}'.format(args.hostname, args.branch,
+        notes_ref = 'buildstats/{}/{}/{}'.format(args.hostname, notesbranch,
                                                  args.machine)
         buildstats = get_buildstats(repo, notes_ref, [rev_l, rev_r], outdir)
 
